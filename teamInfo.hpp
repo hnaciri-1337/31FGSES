@@ -29,12 +29,15 @@ class teamInfo
 		std::vector <std::pair<std::string, std::string> >	_gameData;
 		std::vector <std::string>							teamMembers;
 		std::string											teamName;
-		teamInfo(std::string teamName, std::vector <std::string> names)
+		std::string											teamPassWord;
+		teamInfo(std::string teamName, std::vector <std::string> names, std::string teamPassWord)
 		{
 			this->level = 0;
 			this->teamName = teamName;
 			this->teamMembers = names;
-			for (int i = 0; i < 10; i++) {
+			this->teamPassWord = teamPassWord;
+			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
+			for (int i = 1; i < 10; i++) {
 				_gameData.push_back (std::make_pair ("This is question number: " + std::to_string(i) + "\nAnswer is: " + std::to_string(i), std::to_string(i)));
 			}
 		}

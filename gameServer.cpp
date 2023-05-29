@@ -49,18 +49,22 @@ int  create_socket(const char* host, const char *port)
 void	getClients ()
 {
 	std::ifstream inputFile("teamsData.txt");
-	int	membersNumber;
-
-	while (inputFile >> membersNumber)
+	int i = 0;
+	while (!inputFile.eof ())
 	{
+		std::string	m;
+		std::getline (inputFile, m);
+		if (m.empty () || m[0] == ' ' || m[0] == '\n')
+			break ;
+		int	membersNumber = stoi (m);
 		std::string					teamName;
 		std::string					teamId;
 		std::vector <std::string>	names (membersNumber);
-		inputFile >> teamName;
+		std::getline (inputFile, teamName);
 		for (int i = 0; i < membersNumber; i++)
-			inputFile >> names[i];
-		inputFile >> teamId;
-		clients.insert (std::make_pair (stoi(teamId), teamInfo (teamName, names)));		
+			std::getline (inputFile, names[i]);
+		std::getline (inputFile, teamId);
+		clients.insert (std::make_pair (stoi(teamId), teamInfo (teamName, names, teamId)));		
 	}
 	inputFile.close ();
 }
@@ -100,7 +104,7 @@ int main(int ac, char **av)
 				}
 				it = clients.find(addr.sin_addr.s_addr);
 				FD_SET(clientSock, &fds);
-				sprintf(bufWrite, "Hi %s\nWelcome to the tresor game\nPlease save your id\nYou are in the %d level and this is your task\n%s\n", it->second.teamName.c_str (), it->second.level, it->second._gameData[it->second.level].first.c_str());
+				sprintf(bufWrite, "Hi %s\nWelcome to the tresor game\nThe task number %d: %s\n", it->second.teamName.c_str (), it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
 				send_client(clientSock);
 				break ;
 			}
@@ -118,7 +122,7 @@ int main(int ac, char **av)
 					int	id = atoi (bufRead);
 					std::map<int, teamInfo>::iterator	it = clients.find(id);
 					if (it == clients.end ())
-						sprintf(bufWrite, "it seems like you forget your id\nYou should disconnect from the server and connect again to restore it\nAnyway this is the correct way to submit your answer\nid answer\n");
+						sprintf(bufWrite, "Wrong answer try again !");
 					else
 					{
 						std::string	_ans = std::string (bufRead, res);
