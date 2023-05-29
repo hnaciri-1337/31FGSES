@@ -45,7 +45,7 @@ int main(int ac, char **av)
 	std::ofstream outputFile("teamsData.txt", std::ios::app);
 	if (!outputFile)
 		outputFile.open("teamsData.txt");
-	int sockfd = create_socket ("10.11.1.7", "4000");
+	int sockfd = create_socket ("10.11.2.4", "4000");
 	if (sockfd < 0)
 		fatal_error();
 	FD_ZERO(&fds);
@@ -54,7 +54,7 @@ int main(int ac, char **av)
 	struct sockaddr_in addr;
 	socklen_t addr_len = sizeof(addr);
 	addr.sin_family = AF_INET;
-	std::cout << "Server running on 10.11.1.7:4000" << std::endl;
+	std::cout << "Server running on 10.11.2.4:4000" << std::endl;
 	while (1)
 	{
 		wfds = rfds = fds;
@@ -79,6 +79,7 @@ int main(int ac, char **av)
 					return 0;
 				std::cout << "|" << bufRead << "|";
 				outputFile << bufRead;
+				outputFile.flush();
 				FD_CLR(s, &fds);
 				close(s);
 			}

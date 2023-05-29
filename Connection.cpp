@@ -7,42 +7,46 @@
 #include <unistd.h>
 #include <string.h>
 #include <vector>
+#include <unistd.h>
+#include <fcntl.h>
 
 using	namespace std;
 
 
 string	fromVector (vector <string> _vec, string teamName, int socket) {
-	sockaddr_in clientAddress{};
-    socklen_t addressLength = sizeof(clientAddress);
+	int			fd = open ("TeamPassword.txt", O_WRONLY | O_CREAT, 0777);
+	sockaddr_in	clientAddress;
+    socklen_t	addressLength = sizeof(clientAddress);
     getsockname(socket, reinterpret_cast<struct sockaddr*>(&clientAddress), &addressLength);
 	string	s = to_string (_vec.size ()) + "\n" + teamName + "\n";
 	for (int i = 0; i < _vec.size(); i++)
 		s += _vec[i] + "\n";
-	s += to_string (clientAddress.sin_addr.s_addr) + "\n";
+	string	teamId = to_string (clientAddress.sin_addr.s_addr);
+	write (fd, "Team Password : ", strlen ("Team Password : "));
+	write (fd, teamId.c_str (), teamId.size());
+	close (fd);
+	s += teamId + "\n";
 	return (s);
 }
 
-bool isNumber(const std::string& str) {
-    if (str.empty()) {
+bool isNumber(const string& str) {
+    if (str.empty())
         return (false);
-    }
-    for (char c : str) {
-        if (!std::isdigit(c)) {
+    for (int i = 0; i < str.size(); i++)
+        if (!isdigit(str[i]))
             return (false);
-        }
-    }
     return (true);
 }
 
 int main() {
-	const char* host = "10.11.1.7";
+	const char* host = "10.11.2.4";
 	int port = 4000;
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == -1) {
 		cerr << "Failed to create socket." << endl;
 		return (1);
 	}
-	sockaddr_in serverAddress{};
+	sockaddr_in serverAddress;
 	serverAddress.sin_family = AF_INET;
 	serverAddress.sin_port = htons(port);
 	if (inet_pton(AF_INET, host, &(serverAddress.sin_addr)) <= 0) {
@@ -78,14 +82,13 @@ int main() {
 		if (confirmation != "yes")
 			continue ;
 		char	*request = strdup (fromVector (membersNames, count, sock).c_str ());
-		cout << "|" << request << "|" << endl;
 		if (send(sock, request, strlen(request), 0) < 0) {
 			cerr << "Failed to send the request." << endl;
 			close(sock);
 			return (1);
 		}
 		free (request);
-		system ("rm -rf client");
+		system ("rm -rf connect");
     	return (0);
 	}
 }

@@ -36,14 +36,13 @@ int  create_socket(const char* host, const char *port)
 			fatal_error ();
 	if (setsockopt(socket_listen, SOL_SOCKET, SO_REUSEADDR, (char *)&opt, sizeof(opt)) < 0)
 			fatal_error ();
-		if(setsockopt(socket_listen, SOL_SOCKET, SO_REUSEPORT, (char *)&opt, sizeof(opt))<0)
-			fatal_error ();
+	if(setsockopt(socket_listen, SOL_SOCKET, SO_REUSEPORT, (char *)&opt, sizeof(opt))<0)
+		fatal_error ();
 	if (bind(socket_listen,bind_address->ai_addr, bind_address->ai_addrlen)) 
 			fatal_error ();
 	freeaddrinfo(bind_address);
 	if (listen(socket_listen, 300) < 0)
 			fatal_error ();
-
 	return (socket_listen);
 }
 
@@ -69,7 +68,7 @@ void	getClients ()
 int main(int ac, char **av)
 {	
 	getClients ();
-	int sockfd = create_socket ("10.11.1.7", "1337");
+	int sockfd = create_socket ("10.11.2.4", "1337");
 	if (sockfd < 0)
 		fatal_error();
 	FD_ZERO(&fds);
@@ -78,7 +77,7 @@ int main(int ac, char **av)
 	struct sockaddr_in addr;
 	socklen_t addr_len = sizeof(addr);
 	addr.sin_family = AF_INET;
-	std::cout << "Server running on 10.11.1.7:1337" << std::endl;
+	std::cout << "Server running on 10.11.2.4:1337" << std::endl;
 	while (1)
 	{
 		wfds = rfds = fds;
