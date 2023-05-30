@@ -97,7 +97,7 @@ int main(int ac, char **av)
 {
 	getClients ();
 	updateClients ();
-	int	logsFd = open ("File.logs", O_WRONLY | O_CREAT, 0777);
+	std::ofstream logsFd("File.logs");
 	int sockfd = create_socket ("10.11.2.10", "1337");
 	if (sockfd < 0)
 		fatal_error();
@@ -157,15 +157,13 @@ int main(int ac, char **av)
 						if (client._gameData[client.level].second == _ans)
 						{
 							client.level += 1;
-							write (logsFd, std::to_string(id).c_str(), std::to_string(id).length());
-							write (logsFd, "\n", 1);
-							write (logsFd, std::to_string(client.level).c_str(), std::to_string(client.level).length());
-							write (logsFd, "\n", 1);
+							logsFd << id << "\n" << client.level << "\n";
+							logsFd.flush();
 							if (client.level < client._gameData.size ())
-								sprintf(bufWrite, "%s\033[0;32mCongratulations\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level, client._gameData[client.level].first.c_str());
+								sprintf(bufWrite, "%s\033[0;32mCongratulations\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str());
 						}
 						else
-							sprintf(bufWrite, "%s\033[0;31mOps.. Wrong answer\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level, client._gameData[client.level].first.c_str());
+							sprintf(bufWrite, "%s\033[0;31mOps.. Wrong answer\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str());
 					}
 					if (client.level >= client._gameData.size ())
 							sprintf(bufWrite, "\033[0;32m%sCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL);
