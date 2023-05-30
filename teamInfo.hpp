@@ -1,20 +1,20 @@
-# include <iostream>
-# include <string>
-# include <vector>
-# include <fstream>
-# include <map>
-# include <fcntl.h>
-# include <netdb.h>
-# include <sys/types.h>
-# include <sys/socket.h>
-# include <netinet/in.h>
-# include <arpa/inet.h>
-# include <unistd.h>
-# include <errno.h>
-# include <stdio.h>
-# include <string.h>
-# include <stdlib.h>
-# include <filesystem>
+#include <iostream>
+#include <string>
+#include <vector>
+#include <fstream>
+#include <map>
+#include <fcntl.h>
+#include <netdb.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#include <unistd.h>
+#include <errno.h>
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+#include <filesystem>
 #include <sys/stat.h>
 #include <sys/time.h>
 #include <time.h>
@@ -39,22 +39,35 @@ class teamInfo
 			socket = -1;
 			this->teamPassWord = teamPassWord;
 			setChallenges();
-			for (int i = 1; i < 10; i++) {
-				_gameData.push_back (std::make_pair ("This is question number: " + std::to_string(i) + "\nAnswer is: " + std::to_string(i), std::to_string(i)));
-			}
 		}
 	~teamInfo() {}
 	private:
 		void setChallenges()
 		{
+
       // 1 + 1
-			_gameData.push_back (std::make_pair ("How to list files in a directory", "ls"));
-			_gameData.push_back (std::make_pair ("How to display a file content", "cat"));
-			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
-			_gameData.push_back (std::make_pair ("How to list hidden files ", "ls -a"));
+			_gameData.push_back (std::make_pair ("1 + 1 = ?\n", "2"));
+		
+			_gameData.push_back (std::make_pair ("Think like Albert Einstein !\n1 + 1 = ?\n", "3"));
+		
+			_gameData.push_back (std::make_pair ("In the world of computers, any thing is represented using a system called binary, which consists of only two digits: 0 and 1.\nComputers understand these two digits as the building blocks of all numbers and calculations.\nLet's explore how binary addition works.\n1 + 1 = ?\n", "10"));
+
+			_gameData.push_back (std::make_pair ("And now 1 + 1 = ?\n", "2"));
+			
+			_gameData.push_back (std::make_pair ("In the vast world of Linux, there lived a wise librarian named Lily.\nLily was the guardian of countless directories and files, each containing valuable knowledge and tales waiting to be discovered.\nOne day, a curious visitor arrived at Lily's library named Alex, eager to explore the hidden treasures within.\nAlex asked, Oh wise Lily, how can I unlock the secrets held within your vast collection?\nLily smiled warmly and replied, Fear not, dear explorer! There is a command bestowed upon us by the Linux deities.\nIt is a command that allows you to peer into the depths of directories and files, revealing their names and sizes.\n", "ls"));
+
+			_gameData.push_back (std::make_pair ("In the vast world of Linux, Alex embarked on a quest.\nTo navigate the maze of directories, Alex whispered in command like magic.\nCan you recall what enabled Alex to easily change directories and discover hidden treasures?\n", "cd"));
+		
+			_gameData.push_back (std::make_pair ("In the vast world of Linux, a mysterious command held the power to unravel the secrets hidden within files.\nIt was whispered among the curious explorers as they ventured through the command line kingdom.\nCan you recall the name of this command that, when called, allowed them to peer into the contents of files, unlocking knowledge and revealing the tales concealed within?\n", "cat"));
+			
+			_gameData.push_back (std::make_pair ("Now you have the enough knowledge that allow you to find your team Password, Try to find it\n", this->teamPassWord));
+			
+			_gameData.push_back (std::make_pair ("To continue Alex adventure and find the biggest treasure.\nAhmed, a virtuous man, guided Alex to the path of the treasure known as \"Agora\".However, despite Ahmed's sincerity, Alex found nothing at that location. What's the magical command that allow Alex to find the hidden treasure (rot13)?\n", "ls -a"));
+		
       // permission !
-			_gameData.push_back (std::make_pair ("Now search for a file called rot13 and read it\nSo you can solve the next problem\nEnter the flag you find at the file !", "Uryyb STFRF. Jrypbzr Gb 1337 <3"));
-			_gameData.push_back (std::make_pair ("What is ascii code of character 'a'", "97"));
-			_gameData.push_back (std::make_pair ("Now u need to search About how root13 encryption Work\nWhat is decryption of this message 'Uryyb STFRF. Jrypbzr Gb 1337 <3' Please try To Decrypt it By yourself", "Hello FGSES. Welcome To 1337 <3"));
+			
+			_gameData.push_back (std::make_pair ("Alex treasure is a file called rot13, read it\nAnd show me the key that Alex find !\n", "Uryyb STFRF. Jrypbzr Gb 1337 <3"));
+						
+			_gameData.push_back (std::make_pair ("Alex is really happy and follows the only path he can find.\nAlex walks until he finds a big door that he can't open with the key he found, maybe he should decrypt the key.\n", "Hello FGSES. Welcome To 1337 <3"));
 		}	
 };
