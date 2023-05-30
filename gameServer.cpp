@@ -71,9 +71,33 @@ void	getClients ()
 	inputFile.close ();
 }
 
+void updateClients ()
+{
+	std::ifstream inputFile("File.logs");
+	int i = 0;
+	while (!inputFile.eof ())
+	{
+		std::string	m;
+		std::getline (inputFile, m);
+		if (m.empty () || m[0] == ' ' || m[0] == '\n')
+			break ;
+		int	teamId = stoi (m);
+		std::getline (inputFile, m);
+		int	level = stoi (m);
+		auto it = clients.find (teamId);
+		if (it == clients.end ())
+			continue ;
+		it->second.level = level;
+	}
+	inputFile.close ();
+}
+
+
 int main(int ac, char **av)
-{	
+{
 	getClients ();
+	updateClients ();
+	int	logsFd = open ("File.logs", O_WRONLY | O_CREAT, 0777);
 	int sockfd = create_socket ("10.11.2.10", "1337");
 	if (sockfd < 0)
 		fatal_error();
@@ -106,14 +130,14 @@ int main(int ac, char **av)
 			if (it->second.level < it->second._gameData.size ())
 				sprintf(bufWrite, "%sHi %s\nWelcome to the tresor game\nLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, it->second.teamName.c_str(), it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
 			else
-				sprintf(bufWrite, "%sHi %s\033[0;32mCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL, it->second.teamName.c_str());
+				sprintf(bufWrite, "%sHi %s\n\033[0;32mCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL, it->second.teamName.c_str());
 			send_client(clientSock);
 			continue ;
 		}
-		for (auto &it : clients)
+		for (auto &_it : clients)
 		{
-			int id = it.first;
-			teamInfo &client = it.second;
+			int id = _it.first;
+			teamInfo &client = _it.second;
 			if (client.socket > 0 && FD_ISSET(client.socket, &wfds) && client.socket != sockfd)
 			{
 				int res = recv(client.socket, bufRead, 42 * 4096, 0);
@@ -126,24 +150,25 @@ int main(int ac, char **av)
 				}
 				else
 				{
-					std::map<int, teamInfo>::iterator	it = clients.find(id);
-					if (it == clients.end ())
-						sprintf(bufWrite, "%s\033[0;31mWrong answer try again !\n\033[0;37m", CLEAR_TERMINAL);
-					else if (it->second.level != it->second._gameData.size ())
+					if (client.level != client._gameData.size ())
 					{
 						std::string	_ans = std::string (bufRead, res);
 						_ans.pop_back ();
-						if (it->second._gameData[it->second.level].second == _ans)
+						if (client._gameData[client.level].second == _ans)
 						{
-							it->second.level += 1;
-							if (it->second.level < it->second._gameData.size ())
-								sprintf(bufWrite, "%s\033[0;32mCongratulations\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, it->second.level, it->second._gameData[it->second.level].first.c_str());
+							client.level += 1;
+							write (logsFd, std::to_string(id).c_str(), std::to_string(id).length());
+							write (logsFd, "\n", 1);
+							write (logsFd, std::to_string(client.level).c_str(), std::to_string(client.level).length());
+							write (logsFd, "\n", 1);
+							if (client.level < client._gameData.size ())
+								sprintf(bufWrite, "%s\033[0;32mCongratulations\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level, client._gameData[client.level].first.c_str());
 						}
 						else
-							sprintf(bufWrite, "%s\033[0;31mOps.. Wrong answer\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, it->second.level, it->second._gameData[it->second.level].first.c_str());
+							sprintf(bufWrite, "%s\033[0;31mOps.. Wrong answer\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level, client._gameData[client.level].first.c_str());
 					}
-					if (it ->second.level >= it->second._gameData.size ())
-							sprintf(bufWrite, "%sCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL);
+					if (client.level >= client._gameData.size ())
+							sprintf(bufWrite, "\033[0;32m%sCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL);
 					send_client (client.socket);
 					break;
 				}

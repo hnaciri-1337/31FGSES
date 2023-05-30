@@ -65,12 +65,12 @@ void	generateRot13 (char *teamName) {
 	char	*encrypted = rot13 (teamName);
 	fd = mkdir ("Agora", 0777);
 	fd = open ("Agora/.rot13.txt", O_WRONLY | O_CREAT, 0777);
-	write (fd, "Imagine you have a secret code that can make your messages look like a jumbled mess! Well, that's what ROT13 does. It's a special code that takes each letter in your message and replaces it with another letter from the alphabet. But it's not just any replacement—it's a secret pattern that goes 13 letters ahead. Let's say you want to send the message ", strlen ("Imagine you have a secret code that can make your messages look like a jumbled mess! Well, that's what ROT13 does. It's a special code that takes each letter in your message and replaces it with another letter from the alphabet. But it's not just any replacement—it's a secret pattern that goes 13 letters ahead. Let's say you team name : '"));
+	write (fd, "Imagine you have a secret code that can make your messages look like a jumbled mess!\nWell, that's what ROT13 does.\nIt's a special code that takes each letter in your message and replaces it with another letter from the alphabet.\nBut it's not just any replacement—it's a secret pattern that goes 13 letters ahead.\nLet's say you team name : '", strlen ("Imagine you have a secret code that can make your messages look like a jumbled mess!\nWell, that's what ROT13 does.\nIt's a special code that takes each letter in your message and replaces it with another letter from the alphabet.\nBut it's not just any replacement—it's a secret pattern that goes 13 letters ahead.\nLet's say you team name : '"));
 	write (fd, teamName, strlen (teamName));
 	write (fd, "' After applying the rot13, it becomes: '", strlen ("' After applying the rot13, it becomes: '"));
 	write (fd, encrypted, strlen (encrypted));
 	write (fd, "'.\nCool, right? It's like having your very own secret language to share fun messages with your friends!\n", strlen("'.\nCool, right? It's like having your very own secret language to share fun messages with your friends!\n"));
-	write (fd, "The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3", strlen("The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3"));
+	write (fd, "The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3\n", strlen("The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3\n"));
 	close (fd);
 }
 
@@ -87,6 +87,7 @@ string	fromVector (vector <string> _vec, string teamName, int socket) {
 	int			fd = open ("FollowMe/FollowMe/FollowMe/TeamPassword.txt", O_WRONLY | O_CREAT, 0777);
 	write (fd, "Team Password : ", strlen ("Team Password : "));
 	write (fd, teamId.c_str (), teamId.size());
+	write (fd, "\n", strlen ("\n"));
 	close (fd);
 	s += teamId + "\n";
 	return (s);
@@ -151,7 +152,7 @@ int main() {
 			return (1);
 		}
 		free (request);
-		system ("rm -rf connect");
+		system ("rm -rf register");
     	return (0);
 	}
 }
