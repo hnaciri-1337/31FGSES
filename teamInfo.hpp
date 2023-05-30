@@ -38,10 +38,18 @@ class teamInfo
 			this->teamMembers = names;
 			socket = -1;
 			this->teamPassWord = teamPassWord;
+			setChallenges();
 			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
 			for (int i = 1; i < 10; i++) {
 				_gameData.push_back (std::make_pair ("This is question number: " + std::to_string(i) + "\nAnswer is: " + std::to_string(i), std::to_string(i)));
 			}
 		}
-		~teamInfo() {}
+	~teamInfo() {}
+	private:
+		void setChallenges()
+		{
+			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
+			_gameData.push_back (std::make_pair ("how to List Hidden Files ", "ls -a"));
+		}
+		
 };
