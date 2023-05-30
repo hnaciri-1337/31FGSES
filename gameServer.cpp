@@ -74,7 +74,7 @@ void	getClients ()
 int main(int ac, char **av)
 {	
 	getClients ();
-	int sockfd = create_socket ("10.11.2.8", "1337");
+	int sockfd = create_socket ("172.20.186.106", "1337");
 	if (sockfd < 0)
 		fatal_error();
 	FD_ZERO(&fds);
@@ -83,7 +83,7 @@ int main(int ac, char **av)
 	struct sockaddr_in addr;
 	socklen_t addr_len = sizeof(addr);
 	addr.sin_family = AF_INET;
-	std::cout << "Server running on 10.11.2.8:1337" << std::endl;
+	std::cout << "Server running on 172.20.186.106:1337" << std::endl;
 	while (1)
 	{
 		wfds = rfds = fds;
@@ -96,8 +96,7 @@ int main(int ac, char **av)
 				continue ;
 			max = (clientSock > max) ? clientSock : max;
 			std::map<int, teamInfo>::iterator	it = clients.find(addr.sin_addr.s_addr);
-			if (it == clients.end ())
-			{
+			if (it == clients.end ()) {
 				sprintf(bufWrite, "\033[0;31mHello Team, sorry but it look like you do not authentificate at time\n\033[0;37m");
 				send_client(clientSock);
 				continue ;

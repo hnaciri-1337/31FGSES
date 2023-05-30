@@ -47,11 +47,14 @@ class teamInfo
 	private:
 		void setChallenges()
 		{
+      // 1 + 1
+			_gameData.push_back (std::make_pair ("How to list files in a directory", "ls"));
+			_gameData.push_back (std::make_pair ("How to display a file content", "cat"));
 			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
-			_gameData.push_back (std::make_pair ("How to List Hidden Files ", "ls -a"));
+			_gameData.push_back (std::make_pair ("How to list hidden files ", "ls -a"));
+      // permission !
 			_gameData.push_back (std::make_pair ("Now search for a file called rot13 and read it\nSo you can solve the next problem\nEnter the flag you find at the file !", "Uryyb STFRF. Jrypbzr Gb 1337 <3"));
 			_gameData.push_back (std::make_pair ("What is ascii code of character 'a'", "97"));
-			_gameData.push_back (std::make_pair ("Now u need to search About how root13 encryption Work\nwhat is decryption of this message 'Uryyb STFRF. Jrypbzr Gb 1337 <3' Please try To Decrypt it By yourself", "Hello FGSES. Welcome To 1337 <3"));
-		}
-		
+			_gameData.push_back (std::make_pair ("Now u need to search About how root13 encryption Work\nWhat is decryption of this message 'Uryyb STFRF. Jrypbzr Gb 1337 <3' Please try To Decrypt it By yourself", "Hello FGSES. Welcome To 1337 <3"));
+		}	
 };
