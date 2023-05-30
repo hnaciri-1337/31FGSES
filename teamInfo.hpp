@@ -30,11 +30,13 @@ class teamInfo
 		std::vector <std::string>							teamMembers;
 		std::string											teamName;
 		std::string											teamPassWord;
+		int													socket;
 		teamInfo(std::string teamName, std::vector <std::string> names, std::string teamPassWord)
 		{
 			this->level = 0;
 			this->teamName = teamName;
 			this->teamMembers = names;
+			socket = -1;
 			this->teamPassWord = teamPassWord;
 			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
 			for (int i = 1; i < 10; i++) {

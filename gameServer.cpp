@@ -2,6 +2,8 @@
 
 const int BUF_SIZE = 42 * 4096;
 
+#define FINAL_ANS 5
+
 std::map <int, teamInfo>	clients;
 int max = 0;
 fd_set fds, wfds, rfds;
@@ -72,7 +74,7 @@ void	getClients ()
 int main(int ac, char **av)
 {	
 	getClients ();
-	int sockfd = create_socket ("10.11.2.4", "1337");
+	int sockfd = create_socket ("10.11.2.8", "1337");
 	if (sockfd < 0)
 		fatal_error();
 	FD_ZERO(&fds);
@@ -81,57 +83,60 @@ int main(int ac, char **av)
 	struct sockaddr_in addr;
 	socklen_t addr_len = sizeof(addr);
 	addr.sin_family = AF_INET;
-	std::cout << "Server running on 10.11.2.4:1337" << std::endl;
+	std::cout << "Server running on 10.11.2.8:1337" << std::endl;
 	while (1)
 	{
 		wfds = rfds = fds;
 		if (select(max + 1, &wfds, &rfds, NULL, NULL) < 0)
 			continue ;
-		for (int s = 0; s <= max; s++)
+		if (FD_ISSET(sockfd, &wfds))
 		{
-			if (FD_ISSET(s, &wfds) && s == sockfd)
+			int clientSock = accept(sockfd, (struct sockaddr *)&addr, &addr_len);
+			if (clientSock < 0)
+				continue ;
+			max = (clientSock > max) ? clientSock : max;
+			std::map<int, teamInfo>::iterator	it = clients.find(addr.sin_addr.s_addr);
+			if (it == clients.end ())
 			{
-				int clientSock = accept(sockfd, (struct sockaddr *)&addr, &addr_len);
-				if (clientSock < 0)
-					continue ;
-				max = (clientSock > max) ? clientSock : max;
-				std::map<int, teamInfo>::iterator	it = clients.find(addr.sin_addr.s_addr);
-				if (it == clients.end ())
-				{
-					sprintf(bufWrite, "Hello Team, sorry but it look like you do not authentificate at time\n");
-					send_client(clientSock);
-					break ;
-				}
-				it = clients.find(addr.sin_addr.s_addr);
-				FD_SET(clientSock, &fds);
-				sprintf(bufWrite, "Hi %s\nWelcome to the tresor game\nThe task number %d: %s\n", it->second.teamName.c_str (), it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
+				sprintf(bufWrite, "Hello Team, sorry but it look like you do not authentificate at time\n");
 				send_client(clientSock);
-				break ;
+				continue ;
 			}
-			if (FD_ISSET(s, &wfds) && s != sockfd)
+			it->second.socket = clientSock;
+			FD_SET(clientSock, &fds);
+			sprintf(bufWrite, "Hi %s\nWelcome to the tresor game\nThe task number %d: %s\n", it->second.teamName.c_str (), it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
+			send_client(clientSock);
+			continue ;
+		}
+
+		for (auto &it : clients)
+		{
+			int id = it.first;
+			teamInfo &client = it.second;
+			if (client.socket > 0 && FD_ISSET(client.socket, &wfds) && client.socket != sockfd)
 			{
-				int res = recv(s, bufRead, 42 * 4096, 0);
+				printf("isReady === %d\n", it.second.socket);
+				int res = recv(client.socket, bufRead, 42 * 4096, 0);
 				if (res <= 0)
 				{
-					FD_CLR(s, &fds);
-					close(s);
+					FD_CLR(client.socket, &fds);
+					close(client.socket);
+					client.socket = -1;
 					break ;
 				}
 				else
 				{
-					int	id = atoi (bufRead);
 					std::map<int, teamInfo>::iterator	it = clients.find(id);
 					if (it == clients.end ())
-						sprintf(bufWrite, "Wrong answer try again !");
+						sprintf(bufWrite, "Wrong answer try again !\n");
 					else
 					{
 						std::string	_ans = std::string (bufRead, res);
 						_ans.pop_back ();
-						_ans = _ans.substr (_ans.find_first_of(' ') + 1);
 						if (it->second._gameData[it->second.level].second == _ans)
 						{
 							it->second.level += 1;
-							if (it->second.level == 5)
+							if (it->second.level == FINAL_ANS)
 								sprintf (bufWrite, "Congratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n");
 							else
 								sprintf(bufWrite, "server: Hello id : %d\nCongratulations you pass to the %d level and this is your task\n%s\n", addr.sin_addr.s_addr, it->second.level, it->second._gameData[it->second.level].first.c_str());
@@ -139,7 +144,7 @@ int main(int ac, char **av)
 						else
 							sprintf(bufWrite, "server: Hello id : %d\nOps.. Wrong answer You still in the %d level and this is your task\n%s\n", addr.sin_addr.s_addr, it->second.level, it->second._gameData[it->second.level].first.c_str());
 					}
-					send_client (s);
+					send_client (client.socket);
 					break;
 				}
 			}
