@@ -39,7 +39,6 @@ class teamInfo
 			socket = -1;
 			this->teamPassWord = teamPassWord;
 			setChallenges();
-			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
 			for (int i = 1; i < 10; i++) {
 				_gameData.push_back (std::make_pair ("This is question number: " + std::to_string(i) + "\nAnswer is: " + std::to_string(i), std::to_string(i)));
 			}
@@ -50,6 +49,8 @@ class teamInfo
 		{
 			_gameData.push_back (std::make_pair ("You Have to find your team Password", this->teamPassWord));
 			_gameData.push_back (std::make_pair ("how to List Hidden Files ", "ls -a"));
+			_gameData.push_back (std::make_pair ("what is ascii code of character 'a' ", "97"));
+			_gameData.push_back (std::make_pair ("now u need to search About how root13 encryption Work\nwhat is decryption of this message 'Uryyb STFRF. Jrypbzr Gb 1337 <3' Please try To Decrypt it By yourself", "Hello FGSES. Welcome To 1337 <3"));
 		}
 		
 };
