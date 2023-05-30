@@ -98,20 +98,19 @@ int main(int ac, char **av)
 			std::map<int, teamInfo>::iterator	it = clients.find(addr.sin_addr.s_addr);
 			if (it == clients.end ())
 			{
-				sprintf(bufWrite, "Hello Team, sorry but it look like you do not authentificate at time\n");
+				sprintf(bufWrite, "\033[0;31mHello Team, sorry but it look like you do not authentificate at time\n\033[0;37m");
 				send_client(clientSock);
 				continue ;
 			}
 			it->second.socket = clientSock;
 			FD_SET(clientSock, &fds);
-			if (it ->second.level != FINAL_ANS)
-				sprintf(bufWrite, "Hi %s\nWelcome to the tresor game\nThe task number %d: %s\n",it->second.teamName.c_str(),it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
+			if (it ->second.level < FINAL_ANS)
+				sprintf(bufWrite, "Hi %s\nWelcome to the tresor game\nThe task number %d: \033[0;33m%s\n\033[0;37m", it->second.teamName.c_str(),it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
 			else
-				sprintf (bufWrite, "Hi %s\nCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n",it->second.teamName.c_str());
+				sprintf(bufWrite, "Hi %s\033[0;32mCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", it->second.teamName.c_str());
 			send_client(clientSock);
 			continue ;
 		}
-
 		for (auto &it : clients)
 		{
 			int id = it.first;
@@ -130,7 +129,7 @@ int main(int ac, char **av)
 				{
 					std::map<int, teamInfo>::iterator	it = clients.find(id);
 					if (it == clients.end ())
-						sprintf(bufWrite, "Wrong answer try again !\n");
+						sprintf(bufWrite, "\033[0;31mWrong answer try again !\n\033[0;37m");
 					else if (it->second.level != FINAL_ANS)
 					{
 						std::string	_ans = std::string (bufRead, res);
@@ -139,13 +138,13 @@ int main(int ac, char **av)
 						{
 							it->second.level += 1;
 							if (it->second.level != FINAL_ANS)
-								sprintf(bufWrite, "server: Hello id : %d\nCongratulations you pass to the %d level and this is your task\n%s\n", addr.sin_addr.s_addr, it->second.level, it->second._gameData[it->second.level].first.c_str());
+								sprintf(bufWrite, "\033[0;32mCongratulations\n\033[0;37mYou pass to the %d level and this is your task: \033[0;33m%s\n\033[0;37m", it->second.level, it->second._gameData[it->second.level].first.c_str());
 						}
 						else
-							sprintf(bufWrite, "server: Hello id : %d\nOps.. Wrong answer You still in the %d level and this is your task\n%s\n", addr.sin_addr.s_addr, it->second.level, it->second._gameData[it->second.level].first.c_str());
+							sprintf(bufWrite, "\033[0;31mOps.. Wrong answer\n\033[0;37mYou still in the %d level and this is your task: \033[0;33m%s\n\033[0;37m", it->second.level, it->second._gameData[it->second.level].first.c_str());
 					}
 					if (it ->second.level == FINAL_ANS)
-							sprintf (bufWrite, "Congratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n");
+							sprintf(bufWrite, "Congratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m");
 					send_client (client.socket);
 					break;
 				}
