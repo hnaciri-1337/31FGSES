@@ -92,7 +92,6 @@ void updateClients ()
 	inputFile.close ();
 }
 
-
 int main(int ac, char **av)
 {
 	getClients ();
@@ -163,10 +162,17 @@ int main(int ac, char **av)
 								sprintf(bufWrite, "%s\033[0;32mCongratulations\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str());
 						}
 						else
+						{
+							client.wrongAnswer++;
+							if (client.wrongAnswer % 3 == 0)
+							{
+								sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to fgses program '%s'\n", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str(), wrongPassword[++i]);
+							}
 							sprintf(bufWrite, "%s\033[0;31mOps.. Wrong answer\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str());
+						}
 					}
 					if (client.level >= client._gameData.size ())
-							sprintf(bufWrite, "\033[0;32m%sCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL);
+							sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to fgses program 'FGSESX1337'\n", CLEAR_TERMINAL);
 					send_client (client.socket);
 					break;
 				}

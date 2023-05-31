@@ -31,9 +31,11 @@ class teamInfo
 		std::string											teamName;
 		std::string											teamPassWord;
 		int													socket;
+		int													wrongAnswer;
 		teamInfo(std::string teamName, std::vector <std::string> names, std::string teamPassWord)
 		{
 			this->level = 0;
+			this->wrongAnswer = 0;
 			this->teamName = teamName;
 			this->teamMembers = names;
 			socket = -1;
