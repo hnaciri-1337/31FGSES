@@ -70,14 +70,15 @@ void	generateRot13 (char *teamName) {
 	write (fd, "' After applying the rot13, it becomes: '", strlen ("' After applying the rot13, it becomes: '"));
 	write (fd, encrypted, strlen (encrypted));
 	write (fd, "'.\nCool, right? It's like having your very own secret language to share fun messages with your friends!\n", strlen("'.\nCool, right? It's like having your very own secret language to share fun messages with your friends!\n"));
-	write (fd, "The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3\n", strlen("The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3\n"));
+	write (fd, "The key is : Uryyb YVBAFTRRX. Jrypbzr Gb 1337 <3\n", strlen("The key is : Uryyb YVBAFTRRX. Jrypbzr Gb 1337 <3\n"));
 	close (fd);
 }
 
-string	fromVector (vector <string> _vec, string teamName, int socket) {
+string	fromVector (vector <string> const &_vec, string const &teamName, int socket) {
 	sockaddr_in	clientAddress;
     socklen_t	addressLength = sizeof(clientAddress);
     getsockname(socket, reinterpret_cast<struct sockaddr*>(&clientAddress), &addressLength);
+
 	string	s = to_string (_vec.size ()) + "\n" + teamName + "\n";
 	for (int i = 0; i < _vec.size(); i++)
 		s += _vec[i] + "\n";
@@ -103,7 +104,7 @@ bool isNumber(const string& str) {
 }
 
 int main() {
-	const char* host = "10.11.2.10";
+	const char* host = "10.11.13.2";
 	int port = 4000;
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == -1) {
@@ -140,8 +141,8 @@ int main() {
 			cout << "Enter member " << _i + 1 << " name: ";
 			getline(cin,  membersNames [_i]);
 		}
-		cout << "Are you sure from the informations (yes, no) :";
 		string	confirmation; 
+		cout << "Are you sure from the informations (yes, no) :";
 		getline (cin, confirmation);
 		if (confirmation != "yes")
 			continue ;

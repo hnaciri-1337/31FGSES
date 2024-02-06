@@ -97,7 +97,7 @@ int main(int ac, char **av)
 	getClients ();
 	updateClients ();
 	std::ofstream logsFd("File.logs");
-	int sockfd = create_socket ("10.11.2.10", "1337");
+	int sockfd = create_socket ("10.11.13.2", "1337");
 	if (sockfd < 0)
 		fatal_error();
 	FD_ZERO(&fds);
@@ -106,7 +106,7 @@ int main(int ac, char **av)
 	struct sockaddr_in addr;
 	socklen_t addr_len = sizeof(addr);
 	addr.sin_family = AF_INET;
-	std::cout << "Server running on 10.11.2.10:1337" << std::endl;
+	std::cout << "Server running on 10.11.13.2:1337" << std::endl;
 	while (1)
 	{
 		wfds = rfds = fds;
@@ -129,7 +129,7 @@ int main(int ac, char **av)
 			if (it->second.level < it->second._gameData.size ())
 				sprintf(bufWrite, "%sHi %s\nWelcome to the tresor game\nLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, it->second.teamName.c_str(), it->second.level + 1, it->second._gameData[it->second.level].first.c_str());
 			else
-				sprintf(bufWrite, "%sHi %s\n\033[0;32mCongratulation you win Click on the link to tell everyOne that you success\nLink : https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL, it->second.teamName.c_str());
+				sprintf(bufWrite, "%sHi %s\n\033[0;32mCongratulation you win Click on the link to tell everyOne that you success\nLink: https://www.youtube.com/watch?v=dQw4w9WgXcQ&ab_channel=RickAstley\n\033[0;37m", CLEAR_TERMINAL, it->second.teamName.c_str());
 			send_client(clientSock);
 			continue ;
 		}
@@ -166,13 +166,13 @@ int main(int ac, char **av)
 							client.wrongAnswer++;
 							if (client.wrongAnswer % 3 == 0)
 							{
-								sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to fgses program '%s'\n", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str(), wrongPassword[++i]);
+								sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to lionsgeek program '07/02/24'\n", CLEAR_TERMINAL);
 							}
 							sprintf(bufWrite, "%s\033[0;31mOps.. Wrong answer\n\033[0;37mLEVEL %d:\n\033[0;33m%s\n\033[0;37m", CLEAR_TERMINAL, client.level + 1, client._gameData[client.level].first.c_str());
 						}
 					}
 					if (client.level >= client._gameData.size ())
-							sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to fgses program 'FGSESX1337'\n", CLEAR_TERMINAL);
+							sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to lionsgeek program 'LIONSGEEKX1337'\n", CLEAR_TERMINAL);
 					send_client (client.socket);
 					break;
 				}

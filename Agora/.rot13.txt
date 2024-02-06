@@ -1,7 +1,0 @@
-Imagine you have a secret code that can make your messages look like a jumbled mess!
-Well, that's what ROT13 does.
-It's a special code that takes each letter in your message and replaces it with another letter from the alphabet.
-But it's not just any replacement—it's a secret pattern that goes 13 letters ahead.
-Let's say you team name : 'HAITHAM NACIRI BENSAGHIR' After applying the rot13, it becomes: 'UNVGUNZ ANPVEV ORAFNTUVE'.
-Cool, right? It's like having your very own secret language to share fun messages with your friends!
-The key is : Uryyb STFRF. Jrypbzr Gb 1337 <3
