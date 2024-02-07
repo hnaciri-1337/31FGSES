@@ -104,7 +104,7 @@ bool isNumber(const string& str) {
 }
 
 int main() {
-	const char* host = "10.11.13.2";
+	const char* host = "10.11.13.12";
 	int port = 4000;
 	int sock = socket(AF_INET, SOCK_STREAM, 0);
 	if (sock == -1) {

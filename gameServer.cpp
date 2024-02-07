@@ -97,7 +97,7 @@ int main(int ac, char **av)
 	getClients ();
 	updateClients ();
 	std::ofstream logsFd("File.logs");
-	int sockfd = create_socket ("10.11.13.2", "1337");
+	int sockfd = create_socket ("10.11.13.12", "1337");
 	if (sockfd < 0)
 		fatal_error();
 	FD_ZERO(&fds);
@@ -106,7 +106,7 @@ int main(int ac, char **av)
 	struct sockaddr_in addr;
 	socklen_t addr_len = sizeof(addr);
 	addr.sin_family = AF_INET;
-	std::cout << "Server running on 10.11.13.2:1337" << std::endl;
+	std::cout << "Server running on 10.11.13.12:1337" << std::endl;
 	while (1)
 	{
 		wfds = rfds = fds;
