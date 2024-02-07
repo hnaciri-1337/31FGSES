@@ -16,7 +16,7 @@ int main(int argc, char* argv[]) {
     setMaxVolume();
     if (argc > 1) {
         std::string arg = argv[1];
-        if (arg == "Hello LIONSGEEK. Welcome To 1337 <3") {
+        if (arg == "LIONSGEEK X 1337") {
             openUrl("https://www.youtube.com/watch?v=dQw4w9WgXcQ");
         } else {
             openUrl("https://www.youtube.com/watch?v=umDr0mPuyQc");

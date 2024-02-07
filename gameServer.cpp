@@ -172,7 +172,7 @@ int main(int ac, char **av)
 						}
 					}
 					if (client.level >= client._gameData.size ())
-							sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to lionsgeek program 'LIONSGEEKX1337'\n", CLEAR_TERMINAL);
+							sprintf(bufWrite, "\033[0;32m%sCongratulation You Win\n\033[0;37m And this is the real password pass it to lionsgeek program 'LIONSGEEK X 1337'\n", CLEAR_TERMINAL);
 					send_client (client.socket);
 					break;
 				}

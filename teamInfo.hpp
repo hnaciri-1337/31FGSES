@@ -72,7 +72,7 @@ class teamInfo
 
 			_gameData.push_back (std::make_pair ("To continue Alex adventure and find the biggest treasure.\nAhmed, a virtuous man, guided Alex to the path of the treasure known as \"Agora\".However, despite Ahmed's sincerity, Alex found nothing at that location. What's the magical command that allow Alex to find the hidden treasure (rot13)?\n", "ls -a"));
 
-			_gameData.push_back (std::make_pair ("Alex treasure is a file called rot13, read it\nAnd show me the key that Alex find !\n", "Uryyb STFRF. Jrypbzr Gb 1337 <3"));
+			_gameData.push_back (std::make_pair ("Alex treasure is a file called rot13, read it\nAnd show me the key that Alex find !\n", "Uryyb YVBAFTRRX. Jrypbzr Gb 1337 <3"));
 						
 			_gameData.push_back (std::make_pair ("Alex is really happy and follows the only path he can find.\nAlex walks until he finds a big door that he can't open with the key he found, maybe he should decrypt the key.\n", "Hello LIONSGEEK. Welcome To 1337 <3"));
 		}	
